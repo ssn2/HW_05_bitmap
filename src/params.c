@@ -42,8 +42,7 @@ static int param_set_alloc(const char *val, const struct kernel_param *kp)
 		pr_warn("alloc %lu bytes failed\n", bytes);
 		return -ENOMEM;
 	}
-
-	pr_info("allocated %lu bytes at %p\n", bytes, p);
+	pr_info("allocated %lu bytes at %lx\n", bytes, (unsigned long)p);
 	return 0;
 }
 
@@ -77,12 +76,12 @@ static int param_set_free(const char *val, const struct kernel_param *kp)
 	ret = allocator_free(ptr);
 	switch (ret) {
 	case ALLOC_OK:
-		pr_info("freed memory at %p\n", ptr);
+		pr_info("freed memory at %lx\n", (unsigned long)ptr);
 		return 0;
 	case ALLOC_INVALID:
 		return -EINVAL;
 	case ALLOC_NOT_FOUND:
-		pr_warn("free: pointer not found %p\n", ptr);
+		pr_warn("free: pointer not found %lx\n", (unsigned long)ptr);
 		return -ENOENT;
 	default:
 		return -EIO;
